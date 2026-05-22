@@ -4,7 +4,7 @@
 
 **AI-Powered Urban Canopy Restorer**
 
-*Precision tree prescriptions, satellite heat mapping, and a Green Ledger that rewards every sapling you plant.*
+*Precision tree prescriptions, satellite heat mapping, and a proactive intelligence engine that monitors the city's green cover.*
 
 [![Python](https://img.shields.io/badge/Python-3.11+-3776AB?logo=python&logoColor=white)](https://python.org)
 [![FastAPI](https://img.shields.io/badge/FastAPI-0.110+-009688?logo=fastapi&logoColor=white)](https://fastapi.tiangolo.com)
@@ -19,57 +19,69 @@
 
 ## 🎯 Problem Statement
 
-Bengaluru has lost **78% of its tree cover** in the last two decades. Urban Heat Islands (UHIs) raise surface temperatures by 3–8°C in tree-deficient wards. Citizens want to plant trees but lack:
-- **Which** species suits their exact microclimate & soil
-- **Where** planting has maximum cooling impact
-- **Proof** that saplings survive post-planting
+Bengaluru has lost **78% of its tree cover** in the last two decades. Urban Heat Islands (UHIs) raise surface temperatures by 3–8°C in tree-deficient wards. Traditional urban forestry apps rely on citizens to report where trees should be planted. We need an app that tells the city where trees *must* be planted.
 
-## 💡 Solution
+## 💡 The Solution: Proactive Urban Forestry
 
-Pacha Cover combines **Gemini 2.5 Flash AI**, **Google Earth Engine satellite data**, and **Firestore** to create an end-to-end urban reforestation platform:
+Pacha Cover shifts the paradigm from reactive to proactive. By combining **Gemini 2.5 Flash AI**, **Google Earth Engine satellite data**, and **Firestore**, Pacha Cover acts as an autonomous intelligence engine for the city's green cover:
 
 | Feature | What it does |
 |---------|-------------|
-| 🌡️ **Heat Map** | Ward-level NDVI, LST & heat-risk scores from Earth Engine |
-| 🌳 **Precision Prescription** | AI recommends the best native tree for your exact GPS + soil |
-| ✅ **Sapling Verification** | Gemini Vision verifies planted saplings from photos |
-| 📒 **Green Ledger** | Citizen "Adopt a Spot" tracker with Green Points |
-| 🏘️ **Community** | Ward-level leaderboards and geofenced communities |
-| 🔗 **Green Corridors** | Auto-detects tree clusters forming wildlife corridors |
-| 💨 **Carbon Simulator** | AI-powered CO₂ sequestration & BBMP tax rebate calculator |
-| 🗣️ **Bhasha Voice** | Vernacular voice interface (Kannada, Hindi, Tamil, Telugu) |
-| 📱 **Pacha Vision AR** | View recommended trees in AR before planting |
+| 🧠 **Proactive Intelligence** | An autonomous AI agent monitors all 198 wards, pulling live NDVI & LST from satellites, and pushes critical heat-risk alerts. |
+| 💬 **Conversational Arborist** | Replace boring forms with a Gemini-powered chat interface. Citizens just describe their spot ("3x3 corner, gets afternoon sun"), and AI cross-references soil data to prescribe the exact native species. |
+| 🌡️ **Live Heat Map** | Ward-level NDVI, LST & heat-risk scores generated via Google Earth Engine (Landsat 8 + MODIS). |
+| ✅ **Sapling Verification** | Gemini Vision AI verifies planted saplings from photos to prevent fraud. |
+| 💨 **Carbon Simulator** | Gamified CO₂ sequestration tracking. Calculates exactly how much carbon your trees capture. |
+| 🔗 **Green Corridors** | Auto-detects tree clusters forming wildlife corridors using O(N) spatial clustering algorithms. |
 
-## 🏗️ Architecture
+## 🏗️ Architecture & Data Workflow
 
-```
+```text
 ┌─────────────────────────────────────────────────────────┐
-│                    Frontend (React + Vite)               │
-│  Home · Prescribe · Verify · Heatmap · Community · AR   │
-│         Google OAuth · Glassmorphism Dark UI             │
+│                    Frontend (React + Vite)              │
+│  Home · Prescribe · Verify · Heatmap · Intelligence     │
+│         Google OAuth · Glassmorphism Dark UI            │
 └────────────────────────┬────────────────────────────────┘
-                         │ /api/v1/*
+                         │ REST API (/api/v1/*)
 ┌────────────────────────▼────────────────────────────────┐
-│                FastAPI Backend (Python 3.11+)            │
-│  ┌────────────────────────────────────────────────────┐  │
-│  │  Services Layer                                    │  │
-│  │  ├── GeminiService (prescribe + vision)            │  │
-│  │  ├── PrescriptionCache (instant <50ms results)     │  │
-│  │  ├── CarbonService (CO₂ simulation)                │  │
-│  │  ├── EarthEngineService (NDVI + LST, 24h cache)    │  │
-│  │  ├── CorridorService (O(N) grid clustering)        │  │
-│  │  ├── CommunityService (geofenced wards)            │  │
-│  │  ├── LedgerService (Firestore CRUD)                │  │
-│  │  ├── SoilHealthService (multi-city soil lookup)    │  │
-│  │  └── VoiceService (Bhasha vernacular)              │  │
-│  └────────────────────────────────────────────────────┘  │
+│                FastAPI Backend (Python 3.11+)           │
+│                                                         │
+│  [ Controller Layer ]                                   │
+│  Auth (Google/Firebase) · Rate Limiting · Request Val.  │
+│                                                         │
+│  [ AI Services ]                                        │
+│  ├── IntelligenceService (Proactive Ward Alerts)        │
+│  ├── GeminiService (Conversational Arborist + Vision)   │
+│  └── CarbonService (CO₂ gamification logic)             │
+│                                                         │
+│  [ Core Services ]                                      │
+│  ├── EarthEngineService (Landsat/MODIS Data + Cache)    │
+│  ├── CorridorService (O(N) Spatial Grid Clustering)     │
+│  └── LedgerService (Firestore CRUD & Geohashing)        │
 └────────────┬──────────────┬─────────────┬───────────────┘
              │              │             │
     ┌────────▼──────┐ ┌────▼─────┐ ┌────▼─────────┐
-    │   Firestore   │ │  Gemini  │ │ Earth Engine  │
-    │   (Database)  │ │ 2.5 Flash│ │  (Satellite)  │
+    │   Firestore   │ │  Gemini  │ │ Earth Engine │
+    │   (Database)  │ │ 2.5 Flash│ │  (Satellite) │
     └───────────────┘ └──────────┘ └──────────────┘
 ```
+
+### ⚙️ Core Workflows
+
+1. **The Intelligence Loop**:
+   - `EarthEngineService` fetches Landsat 8 (NDVI) and MODIS (LST) imagery.
+   - Computes normalized heat-risk scores for 198 wards.
+   - `IntelligenceService` feeds this live data into Gemini 2.5 Flash to autonomously generate hyper-targeted, severity-ranked mitigation alerts.
+
+2. **The Conversational Prescription**:
+   - User opens the Chat UI and provides unstructured text ("I want to plant near the bus stop").
+   - `GeminiService` intercepts the prompt, injects background context (the user's GPS coordinates, local soil type, pH, and climate data from the `SoilHealthService`).
+   - Gemini returns a strictly typed JSON prescription (Native Species, Water needs, CO₂ estimates) seamlessly rendered in the UI.
+
+3. **Sapling Verification Lifecycle**:
+   - User uploads a photo of their newly planted sapling.
+   - The image is streamed to Vertex AI / Gemini Vision.
+   - The AI identifies if it's a valid sapling. If valid, the `LedgerService` credits "Green Points" to the user and increments the ward's adoption count in Firestore.
 
 ## 🚀 Quick Start
 
@@ -77,8 +89,8 @@ Pacha Cover combines **Gemini 2.5 Flash AI**, **Google Earth Engine satellite da
 
 - **Python 3.11+** with `pip`
 - **Node.js 18+** with `npm`
-- **Firebase** project with Firestore enabled
-- **Google Cloud** project with Gemini API access
+- **Firebase** project with Firestore enabled (Service Account Key)
+- **Google AI Studio** API Key (for Gemini)
 
 ### 1. Clone & Setup
 
@@ -86,12 +98,12 @@ Pacha Cover combines **Gemini 2.5 Flash AI**, **Google Earth Engine satellite da
 git clone https://github.com/YOUR_USERNAME/Pacha-Cover.git
 cd Pacha-Cover
 
-# Backend
+# Backend setup
 python3 -m venv venv
 source venv/bin/activate  # Windows: venv\Scripts\activate
 pip install -r requirements.txt
 
-# Frontend
+# Frontend setup
 cd frontend
 npm install
 cd ..
@@ -99,104 +111,41 @@ cd ..
 
 ### 2. Configure Environment
 
+Copy the example file and edit it with your keys:
 ```bash
 cp .env.example .env
-# Edit .env with your API keys and Firebase credentials
-# Place your serviceAccountKey.json in the project root
 ```
+Ensure your `serviceAccountKey.json` from Firebase is placed in the root directory.
 
 ### 3. Run Development Servers
 
 ```bash
-# Terminal 1 — Backend (port 8000)
+# Terminal 1 — Backend (runs on port 8000)
 python3 -m uvicorn app.main:app --host 0.0.0.0 --port 8000 --reload
 
-# Terminal 2 — Frontend (port 5173)
+# Terminal 2 — Frontend (runs on port 5173)
 cd frontend && npm run dev
 ```
 
 Open **http://localhost:5173** in your browser.
 
-### 4. Production Build
-
-```bash
-# Build frontend
-cd frontend && npm run build
-
-# Copy to static dir for FastAPI to serve
-cp -r dist ../static
-
-# Run production server
-cd .. && uvicorn app.main:app --host 0.0.0.0 --port 8080 --workers 4
-```
-
-## 📁 Project Structure
-
-```
-Pacha-Cover/
-├── app/                          # FastAPI backend
-│   ├── api/v1/
-│   │   ├── endpoints/            # Route handlers (10 modules)
-│   │   └── router.py             # Central router
-│   ├── core/
-│   │   ├── auth.py               # Google OAuth + Firebase Auth
-│   │   ├── config.py             # Pydantic settings
-│   │   ├── firebase.py           # Firestore client init
-│   │   └── logging.py            # Structured logging (structlog)
-│   ├── models/
-│   │   ├── schemas.py            # Pydantic request/response models
-│   │   └── firestore_collections.py
-│   ├── services/                 # Business logic (11 services)
-│   │   ├── base_ai_service.py    # Shared Gemini config
-│   │   ├── gemini_service.py     # AI prescription + vision
-│   │   ├── prescription_cache.py # Instant prescriptions (<50ms)
-│   │   ├── carbon_service.py     # Carbon credit simulation
-│   │   ├── earth_engine_service.py
-│   │   ├── corridor_service.py   # O(N) spatial clustering
-│   │   ├── community_service.py
-│   │   ├── ledger_service.py     # Firestore CRUD
-│   │   ├── soil_health_service.py
-│   │   ├── ar_service.py
-│   │   └── voice_service.py
-│   └── main.py                   # App factory + middleware
-├── frontend/                     # React + Vite + TypeScript
-│   ├── src/
-│   │   ├── pages/                # 8 page components
-│   │   ├── components/           # Dock, Toast, Skeleton, LiquidEther
-│   │   ├── context/              # AuthContext (Google OAuth)
-│   │   └── api.ts                # Typed API client
-│   └── vite.config.ts
-├── firestore.rules               # Firestore security rules
-├── firestore.indexes.json        # Composite indexes
-├── Dockerfile                    # Production container
-├── requirements.txt              # Python dependencies
-├── .env.example                  # Environment template
-└── README.md
-```
-
-## 🔌 API Endpoints
+## 🔌 Core API Endpoints
 
 | Method | Endpoint | Auth | Description |
 |--------|----------|------|-------------|
-| GET | `/health` | — | Health check |
-| GET | `/api/v1/heatmap` | Optional | Ward heat + NDVI data |
-| POST | `/api/v1/prescribe` | Required | AI tree prescription (instant) |
-| POST | `/api/v1/verify-growth` | Required | Sapling photo verification |
+| GET | `/api/v1/intelligence/alerts` | Optional | Proactive AI-generated ward alerts |
+| POST | `/api/v1/prescribe/chat` | Required | Conversational tree prescription assistant |
+| POST | `/api/v1/verify-growth` | Required | Sapling photo AI verification |
+| POST | `/api/v1/carbon/simulate` | Required | Gamified Carbon sequestration simulation |
+| GET | `/api/v1/heatmap` | Optional | Ward heat + NDVI data from Earth Engine |
 | POST | `/api/v1/ledger/adopt` | Required | Adopt a planting spot |
-| GET | `/api/v1/ledger/community` | Optional | Public community map |
-| GET | `/api/v1/ledger/my-spots` | Required | User's adopted spots |
-| GET | `/api/v1/communities` | Optional | Geofenced communities |
-| GET | `/api/v1/corridors` | Optional | Green corridor clusters |
-| POST | `/api/v1/carbon/simulate` | Required | Carbon credit simulation |
-| GET | `/api/v1/assets/ar-models` | Optional | AR model catalogue |
 
-## 🛡️ Security
+## 🛡️ Security & Best Practices
 
-- **Authentication**: Google OAuth 2.0 + Firebase Auth
-- **Firestore Rules**: 114-line rule set with per-collection access control
-- **Server-side validation**: All inputs validated via Pydantic
-- **Secrets management**: Environment variables, never committed
-- **Immutable audit trail**: Verifications cannot be updated or deleted
+- **Authentication**: Strict Google OAuth 2.0 access token verification via FastAPI middleware. Invalid or expired sessions return `401 Unauthorized` and trigger an automatic frontend logout.
+- **AI Rate Limiting**: Gracefully catches Google Gemini Free-Tier `429 Quota Exceeded` errors and surfaces a safe `503 Service Unavailable` to the frontend without crashing.
+- **Server-Side Validation**: File size (max 10MB) and MIME type checks for image uploads before pinging Gemini Vision.
+- **Database Rules**: Comprehensive Firestore security rules prevent unauthorized data access.
 
 ## 🌍 Supported Cities
 
@@ -219,7 +168,5 @@ MIT License — see [LICENSE](LICENSE) for details.
 ---
 
 <div align="center">
-
 **Made with 🌱 for Bengaluru's urban forest**
-
 </div>
