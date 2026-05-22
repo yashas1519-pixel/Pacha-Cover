@@ -128,6 +128,15 @@ async function fetchWithAuth<T>(endpoint: string, options: RequestInit = {}): Pr
     ...options,
     headers: { ...defaultHeaders, ...(options.headers as Record<string, string>) },
   });
+  
+  if (response.status === 401) {
+    // Token is likely expired. Auto-logout the user.
+    localStorage.removeItem('pacha_token');
+    localStorage.removeItem('pacha_user');
+    window.location.href = '/login';
+    throw new Error("Session expired. Redirecting to login...");
+  }
+  
   if (!response.ok) {
     const errorData = await response.json().catch(() => ({}));
     throw new Error((errorData as { detail?: string }).detail || `API Error: ${response.status}`);
